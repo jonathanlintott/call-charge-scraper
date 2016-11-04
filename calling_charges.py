@@ -8,6 +8,9 @@ import json
 # Web scraping imports
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 class BasePage(object):
 
@@ -54,9 +57,13 @@ class OTwoPage(BasePage):
         country_element.send_keys(country)
         country_element.send_keys(Keys.RETURN)
 
-        price_element = WebDriverWait(content_element, 10).until(
-            EC.presence_of_element_located((By.ID, 'landLine'))
+        contract_tab = WebDriverWait(content_element, 10).until(
+            EC.presence_of_element_located(
+                (By.XPATH, "div[@class='tabs clearfix ui-tabs ui-widget ui-widget-content ui-corner-all']")
+            )
         )
+        link = contract_tab.find_element_by_partial_link_text('Pay Monthly')
+        link.click()
 
 
 def fetch_external_info():
@@ -109,12 +116,12 @@ if __name__ == '__main__':
         # driver.close()
 
     if False:
-        from selenium import webdriver
-        from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-        from selenium.webdriver.common.keys import Keys
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions as EC
-        from selenium.webdriver.common.by import By
+        # from selenium import webdriver
+        # from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+        # from selenium.webdriver.common.keys import Keys
+        # from selenium.webdriver.support.ui import WebDriverWait
+        # from selenium.webdriver.support import expected_conditions as EC
+        # from selenium.webdriver.common.by import By
         binary = FirefoxBinary('C:/Users/jli199/AppData/Local/Mozilla Firefox/firefox.exe')
         driver = webdriver.Firefox(firefox_binary=binary)
         url, _ = fetch_external_info()
@@ -126,6 +133,10 @@ if __name__ == '__main__':
         country_element.send_keys('Germany')
         country_element.send_keys(Keys.RETURN)
 
-        element = WebDriverWait(content_element, 10).until(
-            EC.presence_of_element_located((By.ID, 'landLine'))
+        contract_tab = WebDriverWait(content_element, 10).until(
+            EC.presence_of_element_located(
+                (By.XPATH, "div[@class='tabs clearfix ui-tabs ui-widget ui-widget-content ui-corner-all']")
+            )
         )
+        link = contract_tab.find_element_by_partial_link_text('Pay Monthly')
+        link.click()
