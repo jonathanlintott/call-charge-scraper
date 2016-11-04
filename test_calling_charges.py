@@ -7,6 +7,9 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
+# Local imports
+from calling_charges import BasePage, fetch_external_info
+
 
 class CallingChargeSearch(unittest.TestCase):
     """
@@ -17,8 +20,11 @@ class CallingChargeSearch(unittest.TestCase):
         binary = FirefoxBinary('C:/Users/jli199/AppData/Local/Mozilla Firefox/firefox.exe')
         self.driver = webdriver.Firefox(firefox_binary=binary)
 
-    def test_python_homepage(self):
-        self.driver.get('http://www.python.org')
+    def test_external_info_load(self):
+        url, countries = fetch_external_info()
+        assert isinstance(url, str) and len(url)>0, 'url not loaded correctly'
+        assert isinstance(countries, list) and len(countries)>0, 'countries not loaded ' \
+                                                                 'correctly'
 
     def tearDown(self):
         self.driver.close()

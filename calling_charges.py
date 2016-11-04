@@ -21,8 +21,14 @@ class OTwoPage(BasePage):
     pass
 
 
-# Accepts a webdriver instance and preforms the web scraping
-def main(driver):
+def fetch_external_info():
+    """
+    Fetches url and country list and returns them
+
+    Returns
+    -------
+    Tuple of (url as string, countries as list of strings)
+    """
 
     # Opens 'charges_url.txt' and gets url as string
     with open('charges_url.txt', 'r') as url_file:
@@ -32,8 +38,16 @@ def main(driver):
     with open('countries.txt', 'r') as countries_file:
         countries = json.load(countries_file)
 
+    return url, countries
+
+
+# Accepts a webdriver instance and preforms the web scraping
+def main(driver):
+    url, countries = fetch_external_info()
+
     print url
     print countries
+
 
 
 if __name__ == '__main__':
