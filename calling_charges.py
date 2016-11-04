@@ -1,7 +1,8 @@
 __author__ = 'Jonathan Lintott'
 
 
-# Imports here
+# Standard library imports
+import sys
 
 
 # Basepage for o2 class to inherit
@@ -14,6 +15,27 @@ class OTwoPage(BasePage):
     pass
 
 
-if __name__ == '__main__':
-    # Set up webdriver here, allow additional argument for firefox binary location
+# Accepts a webdriver instance and preforms the web scraping
+def main(driver):
     pass
+
+
+if __name__ == '__main__':
+    from selenium import webdriver
+    from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+    from selenium.common.exceptions import WebDriverException
+
+    # Default webdriver is firefox
+    # Will allow user to set a specific binary location if desired
+    if len(sys.argv) > 1:
+        binary = FirefoxBinary(sys.argv[1])
+    else:
+        binary = None
+
+    try:
+        driver = webdriver.Firefox(firefox_binary=binary)
+    except WebDriverException as e:
+        print(e)
+    else:
+        main(driver)
+        driver.close()
