@@ -54,7 +54,6 @@ def main(driver):
     page = BasePage(driver, url, countries)
 
 
-
 if __name__ == '__main__':
     from selenium import webdriver
     from selenium.webdriver.firefox.firefox_binary import FirefoxBinary

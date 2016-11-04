@@ -20,18 +20,16 @@ class CallingChargeSearch(unittest.TestCase):
         binary = FirefoxBinary('C:/Users/jli199/AppData/Local/Mozilla Firefox/firefox.exe')
         self.driver = webdriver.Firefox(firefox_binary=binary)
 
-    def test_external_info_load(self):
+    def test_calling_charges_scrape(self):
         url, countries = fetch_external_info()
 
+        # Test url and countries have loaded correctly
         assert isinstance(url, str) and len(url)>0, 'url not loaded correctly'
         assert isinstance(countries, list) and len(countries)>0, 'countries not loaded ' \
                                                                  'correctly'
 
-    def test_BasePage(self):
-        url, countries = fetch_external_info()
-
+        # Test BasePage loads the url correctly
         page = BasePage(self.driver, url, countries)
-
         assert page.get_current_url() == url
 
     def tearDown(self):
