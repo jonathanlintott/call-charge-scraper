@@ -33,7 +33,12 @@ class CallingChargeSearch(unittest.TestCase):
         assert page.get_current_url() == url
 
         # Test OTwoPage can find country element and return a cost
-        page.get_country_call_price('Germany')
+        cost1 = page.get_country_call_price('Germany')
+        assert cost1 == 150
+
+        # Test error catching works
+        cost2 = page.get_country_call_price('Lovelyland')
+        assert cost2 is None
 
     def tearDown(self):
         self.driver.close()
