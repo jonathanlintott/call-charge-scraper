@@ -22,9 +22,17 @@ class CallingChargeSearch(unittest.TestCase):
 
     def test_external_info_load(self):
         url, countries = fetch_external_info()
+
         assert isinstance(url, str) and len(url)>0, 'url not loaded correctly'
         assert isinstance(countries, list) and len(countries)>0, 'countries not loaded ' \
                                                                  'correctly'
+
+    def test_BasePage(self):
+        url, countries = fetch_external_info()
+
+        page = BasePage(self.driver, url, countries)
+
+        assert page.get_current_url() == url
 
     def tearDown(self):
         self.driver.close()

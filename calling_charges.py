@@ -15,6 +15,12 @@ class BasePage(object):
 
         self.driver.get(url)
 
+    def get_current_url(self):
+        """
+        Returns the current url as a string
+        """
+        return self.driver.current_url
+
 
 # o2 class implements logic specific to o2's calling charge url
 class OTwoPage(BasePage):
@@ -45,8 +51,7 @@ def fetch_external_info():
 def main(driver):
     url, countries = fetch_external_info()
 
-    print url
-    print countries
+    page = BasePage(driver, url, countries)
 
 
 
