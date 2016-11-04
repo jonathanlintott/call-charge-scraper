@@ -7,7 +7,7 @@ import json
 
 # Web scraping imports
 from selenium.common.exceptions import NoSuchElementException
-
+from selenium.webdriver.common.keys import Keys
 
 class BasePage(object):
 
@@ -43,12 +43,20 @@ class OTwoPage(BasePage):
         -------
         Float, cost of call in pence sterling.
         """
-        try:
-            element = self.driver.find_element_by_xpath("//div[@id='content']//input[@id='countryName']")
-        except NoSuchElementException:
-            return None
+        driver = self.driver
 
-        element.clear()
+        content_element = driver.find_element_by_xpath("//div[@id='content']")
+
+        country_element = content_element.find_element_by_xpath("//input[@id='countryName']")
+
+        # Enter country name
+        country_element.clear()
+        country_element.send_keys(country)
+        country_element.send_keys(Keys.RETURN)
+
+        price_element = WebDriverWait(content_element, 10).until(
+            EC.presence_of_element_located((By.ID, 'landLine'))
+        )
 
 
 def fetch_external_info():
@@ -98,4 +106,26 @@ if __name__ == '__main__':
         print(e)
     else:
         main(driver)
-        driver.close()
+        # driver.close()
+
+    if False:
+        from selenium import webdriver
+        from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+        from selenium.webdriver.common.keys import Keys
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.common.by import By
+        binary = FirefoxBinary('C:/Users/jli199/AppData/Local/Mozilla Firefox/firefox.exe')
+        driver = webdriver.Firefox(firefox_binary=binary)
+        url, _ = fetch_external_info()
+        driver.get(url)
+        content_element = driver.find_element_by_xpath("//div[@id='content']")
+
+        country_element = content_element.find_element_by_xpath("//input[@id='countryName']")
+        country_element.clear()
+        country_element.send_keys('Germany')
+        country_element.send_keys(Keys.RETURN)
+
+        element = WebDriverWait(content_element, 10).until(
+            EC.presence_of_element_located((By.ID, 'landLine'))
+        )
