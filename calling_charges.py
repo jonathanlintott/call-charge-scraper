@@ -159,17 +159,35 @@ def fetch_external_info():
 
 
 # Accepts a webdriver instance and preforms the web scraping
-def main(driver):
+def scrape_costs_and_print(driver):
+    """
+    Uses webdriver to scrape landline calling costs information for Pay Monthly customers from the URL specified in
+    'charges_url.txt' for the countries specified in 'countries.txt' and prints result to screen.
+
+    Parameters
+    ----------
+    driver : webdriver instance
+    """
+
+    # Fetch external information
     url, countries = fetch_external_info()
 
+    # Set up page
     page = OTwoPage(driver, url, countries)
 
-    for country in countries:
-        cost = page.get_country_call_price(country)
-        if cost is None:
-            print('A cost could not be found for country {}'.format(country))
-        else:
-            print('The cost to call {} is {} pence per minute.'.format(country, cost))
+    # Attempt to scrape cost information from page
+    costs = []
+    try:
+        for country in countries:
+            costs.append(page.get_country_call_price(country))
+    except NoSuchElementException as e:
+        print('Cannot scrape information from page given by URL.')
+    else:
+        for country, cost in zip(countries, costs):
+            if cost is None:
+                print('A cost could not be found for country {}'.format(country))
+            else:
+                print('The cost to call {} is {} pence per minute.'.format(country, cost))
 
 
 if __name__ == '__main__':
@@ -189,5 +207,5 @@ if __name__ == '__main__':
     except WebDriverException as e:
         print(e)
     else:
-        main(driver)
+        scrape_costs_and_print(driver)
         driver.close()
