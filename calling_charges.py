@@ -3,11 +3,17 @@ __author__ = 'Jonathan Lintott'
 
 # Standard library imports
 import sys
+import json
 
 
 # Basepage for o2 class to inherit
 class BasePage(object):
-    pass
+
+    def __init__(self, driver, url, countries):
+        self.driver = driver
+        self.countries = countries
+
+        self.driver.get(url)
 
 
 # o2 class implements logic specific to o2's calling charge url
@@ -17,7 +23,17 @@ class OTwoPage(BasePage):
 
 # Accepts a webdriver instance and preforms the web scraping
 def main(driver):
-    pass
+
+    # Opens 'charges_url.txt' and gets url as string
+    with open('charges_url.txt', 'r') as url_file:
+        url = url_file.readline()
+
+    # Opens 'countries.txt' and gets countries as a list of strings
+    with open('countries.txt', 'r') as countries_file:
+        countries = json.load(countries_file)
+
+    print url
+    print countries
 
 
 if __name__ == '__main__':
