@@ -1,5 +1,5 @@
 # call-charge-scraper
-Scrapes a web page for the cost of calling a landline for select countries
+Scrapes a web page for the cost of calling a landline for select countries for a specific o2 website.
 
 Run from directory with calling_charges.py. Firefox webdriver by default.
 
