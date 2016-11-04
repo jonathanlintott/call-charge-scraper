@@ -13,10 +13,11 @@ class CallingChargeSearch(unittest.TestCase):
     For testing of the calling charge scraping script in 'calling_charges.py'
     """
     def setUp(self):
+        # Set up webdriver to use local installation of firefox
         binary = FirefoxBinary('C:/Users/jli199/AppData/Local/Mozilla Firefox/firefox.exe')
         self.driver = webdriver.Firefox(firefox_binary=binary)
 
-    def test_wait(self):
+    def test_python_homepage(self):
         self.driver.get('http://www.python.org')
 
     def tearDown(self):
