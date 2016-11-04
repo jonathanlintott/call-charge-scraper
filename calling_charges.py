@@ -5,8 +5,10 @@ __author__ = 'Jonathan Lintott'
 import sys
 import json
 
+# Web scraping imports
+from selenium.common.exceptions import NoSuchElementException
 
-# Basepage for o2 class to inherit
+
 class BasePage(object):
 
     def __init__(self, driver, url, countries):
@@ -22,9 +24,31 @@ class BasePage(object):
         return self.driver.current_url
 
 
-# o2 class implements logic specific to o2's calling charge url
 class OTwoPage(BasePage):
-    pass
+
+    def get_country_call_price(self, country, contract_type='pay monthly', receiver_type='landline'):
+        """
+        Scrapes the page to find the price of calling that country in pence sterling.
+
+        Parameters
+        ----------
+        country : string
+            Name of country to call
+        contract_type : string
+            Either 'pay monthly' or 'pay as you go'
+        receiver_type : string
+            Either 'landline' or 'mobile'
+
+        Returns
+        -------
+        Float, cost of call in pence sterling.
+        """
+        try:
+            element = self.driver.find_element_by_xpath("//div[@id='content']//input[@id='countryName']")
+        except NoSuchElementException:
+            return None
+
+        element.clear()
 
 
 def fetch_external_info():
@@ -51,7 +75,9 @@ def fetch_external_info():
 def main(driver):
     url, countries = fetch_external_info()
 
-    page = BasePage(driver, url, countries)
+    page = OTwoPage(driver, url, countries)
+
+    page.get_country_call_price('Germany')
 
 
 if __name__ == '__main__':

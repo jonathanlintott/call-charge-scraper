@@ -8,7 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 # Local imports
-from calling_charges import BasePage, fetch_external_info
+from calling_charges import OTwoPage, fetch_external_info
 
 
 class CallingChargeSearch(unittest.TestCase):
@@ -28,9 +28,12 @@ class CallingChargeSearch(unittest.TestCase):
         assert isinstance(countries, list) and len(countries)>0, 'countries not loaded ' \
                                                                  'correctly'
 
-        # Test BasePage loads the url correctly
-        page = BasePage(self.driver, url, countries)
+        # Test OTwoPage loads the url correctly
+        page = OTwoPage(self.driver, url, countries)
         assert page.get_current_url() == url
+
+        # Test OTwoPage can find country element and return a cost
+        page.get_country_call_price('Germany')
 
     def tearDown(self):
         self.driver.close()
